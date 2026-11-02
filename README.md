@@ -24,15 +24,17 @@ by hand; never put a number here that is not measured there.
 python -m http.server 8000 --directory public
 ```
 
-## Cloudflare Pages
+## Cloudflare
 
-- Production branch: `main`
-- Framework preset: None
+Deployed as a Worker with static assets (`wrangler.jsonc`: the files in `public/`, no
+script) from Cloudflare's Git integration:
+
 - Build command: (empty)
-- Build output directory: `public`
-- Custom domain: `hyperbutler.dev`
+- Deploy command: `npx wrangler deploy`
+- Custom domain: `hyperbutler.dev` (the Worker's Settings > Domains & Routes)
 
 Every push to `main` redeploys the site. Only `public/` is served, so this README is not.
+The same folder also works on Cloudflare Pages (build output directory `public`).
 
 The canonical link, `og:url` and `og:image` at the top of `index.html` name the domain;
 every other URL is relative.
