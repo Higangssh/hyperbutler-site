@@ -1,0 +1,10 @@
+// Cloudflare Workers static assets: the files in public/ are the whole site, with no
+// Worker script. public/_headers is applied as on Pages.
+{
+  "name": "hyperbutler-site",
+  "compatibility_date": "2026-11-01",
+  "assets": {
+    "directory": "./public",
+    "not_found_handling": "404-page"
+  }
+}
