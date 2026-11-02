@@ -3,14 +3,15 @@
 The website of [hyperbutler](https://github.com/Higangssh/hyperbutler), served at
 **https://hyperbutler.dev** by Cloudflare Pages.
 
-Plain HTML and CSS in `public/`: no build step, no JavaScript, no web fonts, no analytics.
-The page loads nothing from any other host.
+Plain HTML and CSS in `public/`: no build step, no JavaScript, no analytics. The fonts are
+self-hosted, and the page loads nothing from any other host.
 
 | File | What it is |
 |---|---|
 | `public/index.html` | The page |
 | `public/style.css` | All styles (no inline styles, so the CSP needs no `'unsafe-inline'`) |
 | `public/img/` | Copies of files from the main repository's `assets/brand/` |
+| `public/fonts/` | Geist and Geist Mono (variable woff2), with their license `OFL.txt` |
 | `public/_headers` | Security and cache headers, applied by Cloudflare Pages (not served) |
 | `public/robots.txt`, `public/sitemap.xml` | For crawlers |
 
@@ -21,7 +22,7 @@ by hand; never put a number here that is not measured there.
 ## Preview locally
 
 ```
-python -m http.server 8000 --directory public
+python -I -m http.server 8000 --bind 127.0.0.1 --directory public
 ```
 
 ## Cloudflare
@@ -42,11 +43,12 @@ every other URL is relative.
 ## Security headers
 
 `_headers` sets a strict Content-Security-Policy (`default-src 'none'`, images and the
-stylesheet from the site itself only, no scripts), HSTS without `preload`, `nosniff`,
+stylesheet and fonts from the site itself only, no scripts), HSTS without `preload`, `nosniff`,
 `frame-ancestors 'none'` and a restrictive Permissions-Policy. If you add a script, put it
 in its own file and add `script-src 'self'`; do not allow inline scripts.
 
 ## License
 
-Apache-2.0, like hyperbutler. Docker is a trademark of Docker, Inc.; hyperbutler is not
+Apache-2.0, like hyperbutler. The fonts in `public/fonts/` are Geist and Geist Mono by
+Vercel, under the SIL Open Font License 1.1 (`public/fonts/OFL.txt`). Docker is a trademark of Docker, Inc.; hyperbutler is not
 affiliated with Docker, Inc.

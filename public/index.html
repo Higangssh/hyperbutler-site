@@ -3,13 +3,13 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>hyperbutler: Docker-compatible engine for Windows, no WSL</title>
+  <title>hyperbutler: Docker on Windows, no WSL</title>
   <meta name="description" content="hyperbutler is a lightweight, Docker-compatible container engine for Windows. It runs dockerd in a small Hyper-V VM through the Host Compute Service, without WSL. Open source, Apache-2.0.">
   <meta name="color-scheme" content="dark">
   <meta name="theme-color" content="#060a12">
 
   <!--
-    SITE URL: the only two places that name the domain (link-preview crawlers ignore a
+    SITE URL: the only places that name the domain (link-preview crawlers ignore a
     relative og:image); every other URL on the site is relative.
   -->
   <link rel="canonical" href="https://hyperbutler.dev/">
@@ -18,7 +18,7 @@
 
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="hyperbutler">
-  <meta property="og:title" content="hyperbutler: Docker-compatible engine for Windows, no WSL">
+  <meta property="og:title" content="hyperbutler: Docker on Windows, no WSL">
   <meta property="og:description" content="A lightweight, Docker-compatible engine for Windows. dockerd in a small Hyper-V VM, no WSL. Open source, Apache-2.0.">
   <meta property="og:image:width" content="1600">
   <meta property="og:image:height" content="650">
@@ -28,23 +28,25 @@
   <link rel="icon" type="image/png" sizes="32x32" href="img/icon-32.png">
   <link rel="icon" type="image/png" sizes="256x256" href="img/icon-256.png">
   <link rel="apple-touch-icon" href="img/icon-256.png">
+  <link rel="preload" href="fonts/Geist-Variable.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <a class="skip" href="#main">Skip to content</a>
 
-  <header class="site-header">
-    <div class="wrap header-row">
+  <header class="nav">
+    <div class="wrap nav-row">
       <a class="brand" href="./" aria-label="hyperbutler home">
         <img src="img/icon-32.png" width="32" height="32" alt="">
         <span>hyperbutler</span>
       </a>
-      <span class="badge" title="First public preview">Preview</span>
-      <nav class="site-nav" aria-label="Main">
+      <nav class="nav-links" aria-label="Main">
         <ul>
-          <li><a href="#why">Why</a></li>
-          <li><a href="#quick-start">Quick start</a></li>
+          <li class="nav-sec"><a href="#benchmarks">Benchmarks</a></li>
+          <li class="nav-sec"><a href="#features">Features</a></li>
+          <li class="nav-sec"><a href="#install">Install</a></li>
           <li><a href="https://github.com/Higangssh/hyperbutler">GitHub</a></li>
+          <li><a class="btn btn-sm btn-primary" href="https://github.com/Higangssh/hyperbutler/releases/latest">Download</a></li>
         </ul>
       </nav>
     </div>
@@ -52,210 +54,306 @@
 
   <main id="main">
     <section class="hero" aria-labelledby="hero-title">
-      <div class="wrap">
-        <h1 id="hero-title" class="hero-title">
-          <img class="banner" src="img/logo-banner.webp" width="2000" height="667"
-               alt="hyperbutler">
-        </h1>
-        <p class="pitch">A lightweight, Docker&#8209;compatible engine for Windows &mdash; no&nbsp;WSL</p>
-        <p class="sub">
-          hyperbutler boots a minimal Linux VM through the Windows Host Compute Service (HCS, the
-          same API WSL2 uses), runs dockerd inside it, and serves the Docker API on a named pipe.
-          The stock <code>docker</code> CLI talks to it through a <code>hyperbutler</code> docker context.
-        </p>
-        <div class="cta">
-          <a class="btn btn-primary" href="https://github.com/Higangssh/hyperbutler/releases/latest">Download for Windows</a>
-          <a class="btn btn-secondary" href="https://github.com/Higangssh/hyperbutler">GitHub</a>
-        </div>
-        <p class="meta">
-          <span class="badge">Preview</span>
-          v0.1.0-preview.1 &middot; Windows 11 x64 &middot; MSI or zip &middot; Apache-2.0 &middot;
-          <a href="#preview">What a preview means</a>
-        </p>
-      </div>
-    </section>
-
-    <section id="why" class="section" aria-labelledby="why-title">
-      <div class="wrap">
-        <h2 id="why-title">Why hyperbutler</h2>
-        <p class="lead">
-          Docker on Windows usually means Docker Desktop on WSL2. hyperbutler takes another
-          route and aims to work well by default, with no tuning.
-        </p>
-
-        <ul class="cards">
-          <li class="card">
-            <h3>No WSL needed</h3>
-            <p>
-              The VM runs directly on HCS. WSL is not required, can stay disabled, and WSL
-              updates do not affect it.
-            </p>
-          </li>
-          <li class="card">
-            <h3>Works on Windows Home</h3>
-            <p>
-              Windows 11 Home is first-class; Pro and Enterprise work too. You need an x64 PC
-              with virtualization enabled in the firmware.
-            </p>
-          </li>
-          <li class="card">
-            <h3>Disk space returned automatically</h3>
-            <p>
-              After deleting 3&nbsp;GiB of images, the data disk shrank back to within
-              322&ndash;843&nbsp;MiB of its baseline in 11&nbsp;s or less, with no manual
-              compaction and no admin step.
-            </p>
-          </li>
-          <li class="card">
-            <h3>Small download</h3>
-            <p>
-              The MSI is <strong>116&nbsp;MB</strong> (the zip 109&nbsp;MB), with the
-              <code>docker</code> CLI and the compose plugin included.
-            </p>
-          </li>
-          <li class="card">
-            <h3>Fast start</h3>
-            <p>
-              From <code>hyperbutler start</code> to a working <code>docker info</code>:
-              median <strong>1.44&nbsp;s</strong> (p95 1.45&nbsp;s, 20 runs, warm host cache).
-            </p>
-          </li>
-        </ul>
-
-        <p class="note">
-          Numbers are from the README&rsquo;s
-          <a href="https://github.com/Higangssh/hyperbutler#current-status">Current status</a>,
-          measured on one machine (Windows 11 Home 26200, Core Ultra 7 155H). One machine and
-          one Windows build is not a general result.
-        </p>
-
-        <h3 id="vs-desktop">Measured against Docker Desktop</h3>
-        <p>
-          Same laptop (Windows 11 Home, Core Ultra 7 155H, 32 GB), each with its out-of-the-box
-          settings, one at a time, same script, 2026-11-02.
-          <a href="https://github.com/Higangssh/hyperbutler/blob/main/docs/compare-docker-desktop.md">Method and raw data</a>.
-        </p>
-        <div class="table-wrap">
-          <table class="compare">
-            <thead>
-              <tr><th scope="col"></th><th scope="col">hyperbutler</th><th scope="col">Docker Desktop 4.97 (WSL 2)</th></tr>
-            </thead>
-            <tbody>
-              <tr><th scope="row">Needs WSL</th><td><strong>no</strong></td><td>yes</td></tr>
-              <tr><th scope="row">Download</th><td><strong>116 MB</strong></td><td>592 MB (+351 MB WSL)</td></tr>
-              <tr><th scope="row">Installed size</th><td><strong>179 MB</strong></td><td>about 6.7 GB</td></tr>
-              <tr><th scope="row">Start until a container runs</th><td><strong>2.5 s</strong></td><td>5.6 s</td></tr>
-              <tr><th scope="row">Idle memory, VM running</th><td><strong>322 MiB</strong></td><td>1.7&ndash;2.7 GB</td></tr>
-              <tr><th scope="row">Disk 5 min after deleting ~5 GB of images</th><td><strong>1.5 GiB</strong>, given back</td><td>6.8 GiB, kept</td></tr>
-              <tr><th scope="row">VM memory 2 min after a 2 GiB workload</th><td><strong>320 MiB</strong></td><td>1.3 GB</td></tr>
-              <tr><th scope="row">Bind mount: read 2000 small files</th><td><strong>0.4 s</strong></td><td>3.4 s</td></tr>
-              <tr><th scope="row">License</th><td>Apache-2.0</td><td>paid for companies with 250+ employees or $10M+ revenue</td></tr>
-            </tbody>
-          </table>
-        </div>
-        <p class="note">
-          After about 7 idle minutes Docker Desktop&rsquo;s Resource Saver stops its VM; its
-          processes then use 404 MiB. Docker Desktop is ahead on breadth: Kubernetes, Windows
-          containers, extensions. One machine is not a general result.
-        </p>
-      </div>
-    </section>
-
-    <section id="quick-start" class="section section-alt" aria-labelledby="qs-title">
-      <div class="wrap qs-grid">
-        <div class="qs-body">
-          <h2 id="qs-title">Quick start</h2>
-          <p class="lead">
-            You need Windows 11 (Home, Pro or Enterprise) on x64, with virtualization enabled
-            in the firmware.
+      <div class="hero-bg" aria-hidden="true"></div>
+      <div class="wrap hero-grid">
+        <div class="hero-copy">
+          <a class="pill" href="#preview">
+            <span class="pill-tag">Preview</span>
+            <span>v0.1.0-preview.1</span>
+            <span class="pill-arrow" aria-hidden="true">&rarr;</span>
+          </a>
+          <h1 id="hero-title" class="hero-title">Docker on Windows.<br><span class="grad">No WSL.</span></h1>
+          <p class="hero-sub">
+            hyperbutler is a lightweight, Docker&#8209;compatible engine. It boots a minimal Linux
+            VM through the Windows Host Compute Service, runs dockerd inside it, and lets the
+            stock <code>docker</code> CLI talk to it.
           </p>
-
-          <ol class="steps">
-            <li>
-              <h3>Download and check</h3>
-              <p>
-                Get <code>hyperbutler-&lt;version&gt;-windows-amd64.msi</code> and
-                <code>SHA256SUMS</code> from the
-                <a href="https://github.com/Higangssh/hyperbutler/releases/latest">latest release</a>,
-                then compare the hash:
-              </p>
-              <pre><code>Get-FileHash .\hyperbutler-*-windows-amd64.msi -Algorithm SHA256</code></pre>
-            </li>
-            <li>
-              <h3>Install the MSI</h3>
-              <p>
-                Builds are not code-signed yet, so SmartScreen shows &ldquo;Windows protected
-                your PC&rdquo;: choose <strong>More info</strong>, then <strong>Run anyway</strong>.
-                The installer asks for <strong>one UAC prompt</strong> and then:
-              </p>
-              <ul>
-                <li>adds hyperbutler and its bundled <code>docker</code> CLI to the end of the system PATH;</li>
-                <li>adds your account to <strong>Hyper-V Administrators</strong>, if you leave that box ticked;</li>
-                <li>turns on <strong>Virtual Machine Platform</strong> if it is missing.</li>
-              </ul>
-              <p class="warn">
-                Hyper-V Administrators lets every program you run control the Hyper-V VMs on
-                this PC, not just hyperbutler. Treat it as close to admin rights.
-              </p>
-            </li>
-            <li>
-              <h3>Sign out and back in, or restart once</h3>
-              <p>
-                The group membership applies after you sign out and back in. If Virtual Machine
-                Platform was turned on, Windows needs a restart.
-              </p>
-            </li>
-            <li>
-              <h3>Run a container</h3>
-              <pre><code>hyperbutler start
-docker run hello-world</code></pre>
-            </li>
-          </ol>
-
-          <p class="note">
-            Prefer no installer? The zip needs no admin rights for itself; you set up the
-            prerequisites by hand. See the
-            <a href="https://github.com/Higangssh/hyperbutler#quick-start">README</a> and
-            <a href="https://github.com/Higangssh/hyperbutler/blob/main/docs/install.md">docs/install.md</a>.
-          </p>
+          <div class="cta">
+            <a class="btn btn-primary" href="https://github.com/Higangssh/hyperbutler/releases/latest">
+              <svg class="btn-ico" viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><path d="M8 1.5v8.2m0 0L4.8 6.5M8 9.7l3.2-3.2M2.5 11v2.5h11V11" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              Download for Windows
+            </a>
+            <a class="btn btn-ghost" href="https://github.com/Higangssh/hyperbutler">
+              <svg class="btn-ico" viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><path fill="currentColor" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8Z"/></svg>
+              GitHub
+            </a>
+          </div>
+          <p class="hero-meta">Windows 11 Home, Pro, Enterprise &middot; x64 &middot; MSI or zip &middot; Apache-2.0</p>
         </div>
-        <div class="qs-art">
+        <div class="hero-art">
+          <div class="glow" aria-hidden="true"></div>
           <img src="img/mascot-480.png" width="480" height="423"
                alt="The hyperbutler mascot, a robot butler in a bow tie, holding up a tray with a glowing stack of layers">
+        </div>
+      </div>
+
+      <div class="wrap">
+        <figure class="term" aria-labelledby="term-cap">
+          <div class="term-bar" aria-hidden="true">
+            <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+            <span class="term-title">Windows PowerShell</span>
+          </div>
+<pre class="term-body"><code><span class="ln l1"><span class="ps">PS C:\Users\you&gt;</span> <span class="cmd">hyperbutler start</span></span>
+<span class="ln l2"><span class="ok">hyperbutler is running: the Docker API answered after 1.5 s</span> <span class="dim">(engine pid 7412).</span></span>
+<span class="ln l3"><span class="ps">PS C:\Users\you&gt;</span> <span class="cmd">docker run --rm hello-world</span></span>
+<span class="ln l4"><span class="dim">Unable to find image 'hello-world:latest' locally</span></span>
+<span class="ln l5"><span class="dim">latest: Pulling from library/hello-world</span></span>
+<span class="ln l6"><span class="dim">Status: Downloaded newer image for hello-world:latest</span></span>
+<span class="ln l7"></span>
+<span class="ln l8"><span class="hi">Hello from Docker!</span></span>
+<span class="ln l9">This message shows that your installation appears to be working correctly.</span>
+<span class="ln l10"><span class="ps">PS C:\Users\you&gt;</span> <span class="cursor"></span></span></code></pre>
+          <figcaption id="term-cap" class="sr-only">A PowerShell session: hyperbutler start reports that the Docker API answered after 1.5 seconds, then docker run hello-world prints Hello from Docker.</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <section id="benchmarks" class="section" aria-labelledby="bench-title">
+      <div class="wrap">
+        <p class="eyebrow">Benchmarks</p>
+        <h2 id="bench-title" class="h2">Lighter where it counts.</h2>
+        <p class="lead">
+          hyperbutler against Docker Desktop 4.97 (WSL&nbsp;2), on one laptop, each with its
+          default settings. Shorter bars are better.
+        </p>
+
+        <div class="legend" aria-hidden="true">
+          <span class="key key-hb">hyperbutler</span>
+          <span class="key key-dd">Docker Desktop 4.97 (WSL 2)</span>
+        </div>
+
+        <div class="bench-grid">
+          <article class="bench">
+            <h3>Start until a container runs</h3>
+            <dl class="bars">
+              <div class="bar-row">
+                <dt>hyperbutler</dt>
+                <dd><span class="bar bar-hb w-start-hb"></span><span class="val val-hb">2.5 s</span></dd>
+              </div>
+              <div class="bar-row">
+                <dt>Docker Desktop</dt>
+                <dd><span class="bar bar-dd w-full"></span><span class="val">5.6 s</span></dd>
+              </div>
+            </dl>
+          </article>
+
+          <article class="bench">
+            <h3>Idle memory, VM running</h3>
+            <dl class="bars">
+              <div class="bar-row">
+                <dt>hyperbutler</dt>
+                <dd><span class="bar bar-hb w-mem-hb"></span><span class="val val-hb">322 MiB</span></dd>
+              </div>
+              <div class="bar-row">
+                <dt>Docker Desktop</dt>
+                <dd><span class="bar bar-dd bar-range w-full"><span class="seg w-mem-dd-lo"></span></span><span class="val">1.7&ndash;2.7 GB</span></dd>
+              </div>
+            </dl>
+            <p class="bench-note">Docker Desktop varied over the first 6 minutes; the faded part of its bar is that range.</p>
+          </article>
+
+          <article class="bench">
+            <h3>Disk, 5 min after deleting ~5&nbsp;GB of images</h3>
+            <dl class="bars">
+              <div class="bar-row">
+                <dt>hyperbutler</dt>
+                <dd><span class="bar bar-hb w-disk-hb"></span><span class="val val-hb">1.5 GiB</span></dd>
+              </div>
+              <div class="bar-row">
+                <dt>Docker Desktop</dt>
+                <dd><span class="bar bar-dd w-full"></span><span class="val">6.8 GiB</span></dd>
+              </div>
+            </dl>
+          </article>
+
+          <article class="bench">
+            <h3>Download</h3>
+            <dl class="bars">
+              <div class="bar-row">
+                <dt>hyperbutler</dt>
+                <dd><span class="bar bar-hb w-dl-hb"></span><span class="val val-hb">116 MB</span></dd>
+              </div>
+              <div class="bar-row">
+                <dt>Docker Desktop</dt>
+                <dd><span class="bar bar-dd bar-range w-full"><span class="seg w-dl-dd"></span></span><span class="val">592 MB <span class="val-extra">+351 MB WSL</span></span></dd>
+              </div>
+            </dl>
+            <p class="bench-note">The faded part is the WSL download, needed if WSL is missing.</p>
+          </article>
+
+          <article class="bench bench-wide">
+            <h3>Bind mount: read 2000 small files from C:\</h3>
+            <dl class="bars">
+              <div class="bar-row">
+                <dt>hyperbutler</dt>
+                <dd><span class="bar bar-hb w-bind-hb"></span><span class="val val-hb">0.4 s</span></dd>
+              </div>
+              <div class="bar-row">
+                <dt>Docker Desktop</dt>
+                <dd><span class="bar bar-dd w-full"></span><span class="val">3.4 s</span></dd>
+              </div>
+            </dl>
+          </article>
+        </div>
+
+        <p class="footnote">
+          Measured on one laptop (Windows 11 Home, Core Ultra 7 155H, 32 GB), one engine at a
+          time, same script. Docker Desktop&rsquo;s Resource Saver stops its VM after about 7 idle
+          minutes; its processes then use 404&nbsp;MiB. One machine is not a general result.
+          <a href="https://github.com/Higangssh/hyperbutler/blob/main/docs/compare-docker-desktop.md">Method and raw data<span aria-hidden="true"> &rarr;</span></a>
+        </p>
+      </div>
+    </section>
+
+    <section id="features" class="section" aria-labelledby="feat-title">
+      <div class="wrap">
+        <p class="eyebrow">Features</p>
+        <h2 id="feat-title" class="h2">Works well by default.</h2>
+        <p class="lead">No tuning, no extra subsystem to keep updated. Install it, start it, run containers.</p>
+
+        <ul class="bento">
+          <li class="tile tile-hero">
+            <span class="tile-ico" aria-hidden="true">
+              <svg viewBox="0 0 24 24" width="22" height="22"><path d="M5 12h14M12 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </span>
+            <h3>No WSL</h3>
+            <p>
+              The VM runs directly on the Windows Host Compute Service, the same API WSL&nbsp;2
+              uses. WSL is not required, can stay disabled, and its updates do not affect
+              hyperbutler.
+            </p>
+            <p class="tile-stat"><span class="num">3</span> resident processes at idle</p>
+          </li>
+          <li class="tile">
+            <span class="tile-ico" aria-hidden="true">
+              <svg viewBox="0 0 24 24" width="22" height="22"><path d="M3 5.5 10.5 4.5v7H3zM12 4.3 21 3v8.5h-9zM3 12.5h7.5v7L3 18.5zM12 12.5h9V21l-9-1.3z" fill="currentColor"/></svg>
+            </span>
+            <h3>Works on Windows&nbsp;11 Home</h3>
+            <p>Home is first-class; Pro and Enterprise work too. You need an x64 PC with virtualization enabled in the firmware.</p>
+          </li>
+          <li class="tile">
+            <span class="tile-ico" aria-hidden="true">
+              <svg viewBox="0 0 24 24" width="22" height="22"><path d="M4 7h16M9 7V4.5h6V7M6 7l1 13h10l1-13" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </span>
+            <h3>Disk space given back automatically</h3>
+            <p>Delete images and the data disk shrinks on its own. No manual compaction, no admin step.</p>
+          </li>
+          <li class="tile">
+            <span class="tile-ico" aria-hidden="true">
+              <svg viewBox="0 0 24 24" width="22" height="22"><path d="M13 2 4 14h7l-1 8 9-12h-7z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>
+            </span>
+            <h3>Fast bind mounts from C:\</h3>
+            <p>Mount a Windows folder with <code>-v C:\src:/src</code>. Reading 2000 small files took 0.4&nbsp;s.</p>
+          </li>
+          <li class="tile">
+            <span class="tile-ico" aria-hidden="true">
+              <svg viewBox="0 0 24 24" width="22" height="22"><path d="m5 8 4 4-4 4M12 16h7" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </span>
+            <h3>Stock docker CLI + Compose</h3>
+            <p>The <code>docker</code> CLI and the compose plugin are bundled and set up through a <code>hyperbutler</code> docker context.</p>
+          </li>
+          <li class="tile tile-half">
+            <span class="tile-ico tile-ico-amber" aria-hidden="true">
+              <svg viewBox="0 0 24 24" width="22" height="22"><path d="M12 3 4.5 6v5.5c0 4.5 3.2 8.2 7.5 9.5 4.3-1.3 7.5-5 7.5-9.5V6z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>
+            </span>
+            <h3>No telemetry</h3>
+            <p>hyperbutler sends no usage data. The app only checks GitHub for updates once a day, and you can turn that off.</p>
+          </li>
+          <li class="tile tile-half">
+            <span class="tile-ico" aria-hidden="true">
+              <svg viewBox="0 0 24 24" width="22" height="22"><path d="m8 7-5 5 5 5M16 7l5 5-5 5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </span>
+            <h3>Open source, Apache-2.0</h3>
+            <p>The source is on <a href="https://github.com/Higangssh/hyperbutler">GitHub</a>. Free to use at any company size.</p>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <section id="install" class="section" aria-labelledby="install-title">
+      <div class="wrap">
+        <p class="eyebrow">Install</p>
+        <h2 id="install-title" class="h2">Three steps to <span class="mono-inline">hello-world</span>.</h2>
+        <p class="lead">You need Windows 11 (Home, Pro or Enterprise) on x64, with virtualization enabled in the firmware.</p>
+
+        <ol class="steps">
+          <li class="step">
+            <span class="step-num" aria-hidden="true">1</span>
+            <h3>Run the MSI</h3>
+            <p>Download it from the <a href="https://github.com/Higangssh/hyperbutler/releases/latest">latest release</a>. One UAC prompt, then it:</p>
+            <ul class="ticks">
+              <li>adds hyperbutler and its <code>docker</code> CLI to the PATH;</li>
+              <li>adds you to <strong>Hyper-V Administrators</strong>, if you leave that box ticked;</li>
+              <li>turns on <strong>Virtual Machine Platform</strong> if it is missing.</li>
+            </ul>
+          </li>
+          <li class="step">
+            <span class="step-num" aria-hidden="true">2</span>
+            <h3>Sign out and back in</h3>
+            <p>The group membership applies at your next sign-in. If Virtual Machine Platform was just turned on, Windows asks for a restart instead.</p>
+          </li>
+          <li class="step">
+            <span class="step-num" aria-hidden="true">3</span>
+            <h3>Run a container</h3>
+<pre class="code"><code><span class="ps">&gt;</span> hyperbutler start
+<span class="ps">&gt;</span> docker run hello-world</code></pre>
+          </li>
+        </ol>
+
+        <div class="callouts">
+          <div class="callout">
+            <h3>Unsigned preview</h3>
+            <p>
+              Builds are not code-signed yet, so SmartScreen says &ldquo;Windows protected your
+              PC&rdquo;: choose <strong>More info</strong>, then <strong>Run anyway</strong>.
+              Check the file against <code>SHA256SUMS</code> from the release first:
+            </p>
+<pre class="code"><code>Get-FileHash .\hyperbutler-*-windows-amd64.msi -Algorithm SHA256</code></pre>
+          </div>
+          <div class="callout callout-warn">
+            <h3>About Hyper-V Administrators</h3>
+            <p>
+              The group lets every program you run control the Hyper-V VMs on this PC, not just
+              hyperbutler. Treat it as close to admin rights. Prefer no installer? The zip needs
+              no admin rights for itself; see the
+              <a href="https://github.com/Higangssh/hyperbutler/blob/main/docs/install.md">install guide</a>.
+            </p>
+          </div>
         </div>
       </div>
     </section>
 
     <section id="preview" class="section" aria-labelledby="preview-title">
       <div class="wrap">
-        <h2 id="preview-title"><span class="badge badge-lg">Preview</span> This is an early preview</h2>
-        <p class="lead">
-          It works end to end on Windows 11 Home, but some things are still open. Among them:
-        </p>
-        <ul class="gaps">
-          <li>The 24-hour soak test has not been run (the 1-hour run passed).</li>
-          <li>Until the HCS access broker ships, your account needs Hyper-V Administrators membership.</li>
-          <li>Docker Compose has not been tested yet.</li>
-          <li>Bind mounts from Windows paths work, but are not yet fast for write-heavy trees: use a named volume for <code>node_modules</code>.</li>
-          <li>Builds are not code-signed, and the installer is English only.</li>
-        </ul>
-        <p>
-          <a class="btn btn-secondary" href="https://github.com/Higangssh/hyperbutler#current-status">Current status and known gaps</a>
-        </p>
+        <div class="preview-card">
+          <p class="eyebrow eyebrow-amber">Preview</p>
+          <h2 id="preview-title" class="h2 h2-sm">This is an early preview.</h2>
+          <p>It works end to end on Windows 11 Home, but some things are still open. Among them:</p>
+          <ul class="gaps">
+            <li>The 24-hour soak test has not been run (the 1-hour run passed).</li>
+            <li>Until the HCS access broker ships, your account needs Hyper-V Administrators membership.</li>
+            <li>Docker Compose has not been tested yet.</li>
+            <li>Bind mounts from Windows paths work, but are not yet fast for write-heavy trees: use a named volume for <code>node_modules</code>.</li>
+            <li>Builds are not code-signed, and the installer is English only.</li>
+          </ul>
+          <p><a class="btn btn-ghost" href="https://github.com/Higangssh/hyperbutler#current-status">Current status and known gaps</a></p>
+        </div>
       </div>
     </section>
   </main>
 
-  <footer class="site-footer">
+  <footer class="footer">
     <div class="wrap footer-row">
+      <div class="footer-brand">
+        <img src="img/icon-32.png" width="24" height="24" alt="">
+        <span>hyperbutler</span>
+      </div>
       <p>
-        hyperbutler is open source under the
-        <a href="https://github.com/Higangssh/hyperbutler/blob/main/LICENSE">Apache-2.0</a> license.
+        Open source under the
+        <a href="https://github.com/Higangssh/hyperbutler/blob/main/LICENSE">Apache-2.0</a> license
         &middot; <a href="https://github.com/Higangssh/hyperbutler">GitHub</a>
       </p>
-      <p class="fine">
-        Docker is a trademark of Docker, Inc. hyperbutler is not affiliated with Docker, Inc.
-      </p>
+      <p class="fine">Docker is a trademark of Docker, Inc. hyperbutler is not affiliated with Docker, Inc.</p>
     </div>
   </footer>
 </body>

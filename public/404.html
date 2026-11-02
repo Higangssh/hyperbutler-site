@@ -5,13 +5,39 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Not found · hyperbutler</title>
   <meta name="robots" content="noindex">
+  <meta name="color-scheme" content="dark">
+  <meta name="theme-color" content="#060a12">
   <link rel="icon" href="/img/icon-32.png" sizes="32x32">
+  <link rel="preload" href="/fonts/Geist-Variable.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="/style.css">
 </head>
 <body>
-  <main class="wrap">
-    <h1>Not found</h1>
-    <p>That page does not exist. <a href="/">Back to hyperbutler</a>.</p>
+  <a class="skip" href="#main">Skip to content</a>
+
+  <header class="nav">
+    <div class="wrap nav-row">
+      <a class="brand" href="/" aria-label="hyperbutler home">
+        <img src="/img/icon-32.png" width="32" height="32" alt="">
+        <span>hyperbutler</span>
+      </a>
+      <nav class="nav-links" aria-label="Main">
+        <ul>
+          <li><a href="https://github.com/Higangssh/hyperbutler">GitHub</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main" class="notfound">
+    <div class="hero-bg" aria-hidden="true"></div>
+    <div class="wrap">
+      <p class="notfound-code">404</p>
+      <h1>Not found.</h1>
+      <p>That page does not exist.</p>
+      <div class="cta">
+        <a class="btn btn-primary" href="/">Back to hyperbutler</a>
+      </div>
+    </div>
   </main>
 </body>
 </html>
