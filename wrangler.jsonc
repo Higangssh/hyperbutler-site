@@ -3,6 +3,10 @@
 {
   "name": "hyperbutler-site",
   "compatibility_date": "2026-11-01",
+  // Served only at https://hyperbutler.dev (a custom domain on the Worker), so search
+  // engines see one address.
+  "workers_dev": false,
+  "preview_urls": false,
   "assets": {
     "directory": "./public",
     "not_found_handling": "404-page"
