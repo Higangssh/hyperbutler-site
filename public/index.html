@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>hyperbutler: Docker on Windows, no WSL</title>
-  <meta name="description" content="hyperbutler is a lightweight, Docker-compatible container engine for Windows. It runs dockerd in a small Hyper-V VM through the Host Compute Service, without WSL. Open source, Apache-2.0.">
+  <title>hyperbutler: Docker on Windows with less RAM, less disk, and no WSL</title>
+  <meta name="description" content="Run Docker on Windows with less RAM, less disk, and no WSL. hyperbutler runs dockerd in a small Hyper-V VM through the Host Compute Service and works with the stock docker CLI and Compose. Open source, Apache-2.0.">
   <meta name="color-scheme" content="dark">
   <meta name="theme-color" content="#060a12">
 
@@ -18,8 +18,8 @@
 
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="hyperbutler">
-  <meta property="og:title" content="hyperbutler: Docker on Windows, no WSL">
-  <meta property="og:description" content="A lightweight, Docker-compatible engine for Windows. dockerd in a small Hyper-V VM, no WSL. Open source, Apache-2.0.">
+  <meta property="og:title" content="hyperbutler: Docker on Windows with less RAM, less disk, and no WSL">
+  <meta property="og:description" content="Run Docker on Windows with less RAM, less disk, and no WSL. Works with the stock docker CLI and Compose. Open source, Apache-2.0.">
   <meta property="og:image:width" content="1600">
   <meta property="og:image:height" content="650">
   <meta property="og:image:alt" content="The hyperbutler logo: a robot butler carrying a stack of layers on a tray">
@@ -44,6 +44,7 @@
         <ul>
           <li class="nav-sec"><a href="#benchmarks">Benchmarks</a></li>
           <li class="nav-sec"><a href="#features">Features</a></li>
+          <li class="nav-sec"><a href="#how">How it works</a></li>
           <li class="nav-sec"><a href="#install">Install</a></li>
           <li><a href="https://github.com/Higangssh/hyperbutler">GitHub</a></li>
           <li><a class="btn btn-sm btn-primary" href="https://github.com/Higangssh/hyperbutler/releases/latest">Download</a></li>
@@ -62,7 +63,7 @@
             <span>v0.1.0-preview.1</span>
             <span class="pill-arrow" aria-hidden="true">&rarr;</span>
           </a>
-          <h1 id="hero-title" class="hero-title">Docker on Windows.<br><span class="grad">No WSL.</span></h1>
+          <h1 id="hero-title" class="hero-title">Docker on Windows.<br><span class="grad">Less RAM. Less disk. No WSL.</span></h1>
           <p class="hero-sub">
             hyperbutler is a lightweight, Docker&#8209;compatible engine. It boots a minimal Linux
             VM through the Windows Host Compute Service, runs dockerd inside it, and lets the
@@ -250,7 +251,7 @@
               <svg viewBox="0 0 24 24" width="22" height="22"><path d="m5 8 4 4-4 4M12 16h7" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
             </span>
             <h3>Stock docker CLI + Compose</h3>
-            <p>The <code>docker</code> CLI and the compose plugin are bundled and set up through a <code>hyperbutler</code> docker context.</p>
+            <p>The <code>docker</code> CLI and the compose plugin are bundled and set up through a <code>hyperbutler</code> docker context. Compose builds, healthchecks, service names, volumes and bind mounts are tested.</p>
           </li>
           <li class="tile tile-half">
             <span class="tile-ico tile-ico-amber" aria-hidden="true">
@@ -267,6 +268,62 @@
             <p>The source is on <a href="https://github.com/Higangssh/hyperbutler">GitHub</a>. Free to use at any company size.</p>
           </li>
         </ul>
+      </div>
+    </section>
+
+    <section id="how" class="section" aria-labelledby="how-title">
+      <div class="wrap">
+        <p class="eyebrow">How it works</p>
+        <h2 id="how-title" class="h2">Three small parts, no WSL in between.</h2>
+        <p class="lead">
+          Your tools talk to a process of your own, which talks to a small Linux VM over Hyper&#8209;V
+          sockets. A tiny Windows service is the only privileged part: it starts and stops that VM,
+          and nothing else.
+        </p>
+
+        <div class="arch" role="img" aria-label="The docker CLI and Compose talk over a named pipe to the hyperbutler engine, which runs as you. The engine talks over Hyper-V sockets to a Linux VM running dockerd. The broker service starts and stops the VM through the Windows Host Compute Service.">
+          <div class="arch-node arch-apps">
+            <p class="arch-who">Your tools</p>
+            <h3>docker CLI &middot; Compose &middot; SDKs</h3>
+            <p>Unchanged. They use a <code>hyperbutler</code> docker context.</p>
+          </div>
+          <div class="arch-link" aria-hidden="true"><span>named pipe</span></div>
+          <div class="arch-node arch-engine">
+            <p class="arch-who">Runs as you, no admin</p>
+            <h3>hyperbutler engine</h3>
+            <ul>
+              <li>Docker API relay</li>
+              <li>User-mode network: NAT, DNS, published ports</li>
+              <li>Fast file server for bind mounts from <code>C:\</code></li>
+              <li>Disk-space guard, status, the window</li>
+            </ul>
+          </div>
+          <div class="arch-link" aria-hidden="true"><span>Hyper&#8209;V sockets</span></div>
+          <div class="arch-node arch-vm">
+            <p class="arch-who">Linux VM on HCS</p>
+            <h3>dockerd + containerd</h3>
+            <ul>
+              <li>Minimal Alpine, read-only system disk pinned by hash</li>
+              <li>Data disk gives freed space back to Windows</li>
+              <li>Answers only your engine, with a per-VM secret</li>
+            </ul>
+          </div>
+          <div class="arch-node arch-broker">
+            <p class="arch-who">Windows service <span class="arch-tag">from v0.1.0</span></p>
+            <h3>hyperbutler broker</h3>
+            <p>
+              The only part that calls the Host Compute Service. Seven short, typed requests
+              (start, stop, status&hellip;) over a pipe only you can open, a fixed VM template, and
+              no paths or command lines from the caller. So you need neither admin rights nor the
+              Hyper&#8209;V Administrators group.
+            </p>
+          </div>
+        </div>
+
+        <p class="footnote">
+          Design decisions, threat model and review results:
+          <a href="https://github.com/Higangssh/hyperbutler#architecture">Architecture in the README<span aria-hidden="true"> &rarr;</span></a>
+        </p>
       </div>
     </section>
 

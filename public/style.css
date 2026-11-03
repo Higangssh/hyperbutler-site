@@ -603,6 +603,86 @@ p:last-child { margin-bottom: 0; }
   letter-spacing: -0.04em;
 }
 
+/* ---------- How it works ---------- */
+
+.arch {
+  display: grid;
+  grid-template-columns: minmax(0, 0.9fr) 92px minmax(0, 1.2fr) 92px minmax(0, 1.1fr);
+  grid-template-areas:
+    "apps l1 engine l2 vm"
+    ".    .  broker .  .";
+  align-items: stretch;
+  row-gap: 16px;
+}
+.arch-apps { grid-area: apps; }
+.arch-engine { grid-area: engine; }
+.arch-vm { grid-area: vm; }
+.arch-broker { grid-area: broker; }
+.arch > .arch-link:nth-of-type(2) { grid-area: l1; }
+.arch > .arch-link:nth-of-type(4) { grid-area: l2; }
+
+.arch-node {
+  position: relative;
+  padding: 24px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: linear-gradient(180deg, var(--surface-2), var(--surface));
+}
+.arch-engine { border-color: rgba(108, 178, 255, 0.35); }
+.arch-broker { border-color: rgba(245, 184, 61, 0.3); }
+.arch-broker::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: -17px;
+  width: 1px;
+  height: 16px;
+  background: rgba(245, 184, 61, 0.5);
+}
+.arch-who {
+  margin-bottom: 6px;
+  color: var(--blue-text);
+  font-family: var(--mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.04em;
+}
+.arch-broker .arch-who { color: var(--amber); }
+.arch-tag {
+  margin-left: 6px;
+  padding: 1px 7px;
+  border: 1px solid rgba(245, 184, 61, 0.35);
+  border-radius: 99px;
+  font-size: 0.7rem;
+}
+.arch-node h3 { margin-bottom: 10px; font-size: 1.08rem; font-weight: 620; letter-spacing: -0.02em; }
+.arch-node p, .arch-node li { color: var(--muted); font-size: 0.9rem; }
+.arch-node ul { margin: 0; padding-left: 18px; }
+.arch-node li + li { margin-top: 4px; }
+
+.arch-link {
+  position: relative;
+  display: grid;
+  place-items: center;
+}
+.arch-link::before {
+  content: "";
+  position: absolute;
+  left: 6px;
+  right: 6px;
+  top: 50%;
+  height: 1px;
+  background: linear-gradient(90deg, rgba(108, 178, 255, 0.15), rgba(108, 178, 255, 0.7), rgba(108, 178, 255, 0.15));
+}
+.arch-link span {
+  position: relative;
+  padding: 2px 6px;
+  background: var(--bg);
+  color: var(--faint);
+  font-family: var(--mono);
+  font-size: 0.68rem;
+  text-align: center;
+}
+
 /* ---------- Install ---------- */
 
 .steps {
@@ -788,6 +868,15 @@ p:last-child { margin-bottom: 0; }
   .glow { inset: -30% -40%; }
   .steps { grid-template-columns: 1fr; }
   .tile, .tile-half { grid-column: span 3; }
+  .arch {
+    grid-template-columns: 1fr;
+    grid-template-areas: "apps" "l1" "engine" "l2" "vm" "broker";
+    row-gap: 0;
+  }
+  .arch-link { height: 44px; }
+  .arch-link::before { left: 50%; right: auto; top: 0; bottom: 0; width: 1px; height: auto; }
+  .arch-broker { margin-top: 16px; }
+  .arch-broker::before { display: none; }
   .tile-hero { grid-column: 1 / -1; }
 }
 
