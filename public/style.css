@@ -605,6 +605,37 @@ p:last-child { margin-bottom: 0; }
 
 /* ---------- How it works ---------- */
 
+/* The drawing on wide screens; the cards below it on narrow ones. */
+.arch-svg { display: block; width: 100%; height: auto; overflow: visible; }
+.arch-svg + .arch { display: none; }
+
+.arch-svg .region { fill: rgba(255, 255, 255, 0.015); stroke: var(--line); stroke-dasharray: 4 6; }
+.arch-svg .region-vm { fill: rgba(90, 209, 154, 0.03); stroke: rgba(90, 209, 154, 0.25); }
+.arch-svg .region-label { fill: var(--faint); font-family: var(--mono); font-size: 11px; letter-spacing: 0.1em; }
+
+.arch-svg .node { stroke: var(--line); }
+.arch-svg .node-engine { stroke: rgba(108, 178, 255, 0.55); }
+.arch-svg .node-broker { stroke: rgba(245, 184, 61, 0.5); }
+
+.arch-svg text { font-family: var(--sans); }
+.arch-svg .eyebrow-s { fill: var(--blue-text); font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.08em; }
+.arch-svg .eyebrow-amber { fill: var(--amber); }
+.arch-svg .title-s { fill: var(--text); font-size: 17px; font-weight: 620; }
+.arch-svg .title-l { fill: var(--text); font-size: 20px; font-weight: 640; letter-spacing: -0.02em; }
+.arch-svg .body-s, .arch-svg .row text { fill: var(--muted); font-size: 13.5px; }
+.arch-svg .row circle { fill: var(--blue-text); opacity: 0.8; }
+
+.arch-svg .chip { fill: rgba(255, 255, 255, 0.04); stroke: var(--line); }
+.arch-svg .chip-t { fill: var(--text); font-family: var(--mono); font-size: 12px; text-anchor: middle; }
+
+.arch-svg .link { fill: none; stroke: rgba(108, 178, 255, 0.75); stroke-width: 1.6; }
+.arch-svg .link-amber { stroke: rgba(245, 184, 61, 0.75); }
+.arch-svg .ah { fill: rgba(108, 178, 255, 0.9); }
+.arch-svg .ah-amber { fill: rgba(245, 184, 61, 0.9); }
+.arch-svg .link-t { fill: var(--faint); font-family: var(--mono); font-size: 11px; }
+.arch-svg .flow { stroke-dasharray: 6 5; animation: arch-flow 1.4s linear infinite; }
+@keyframes arch-flow { to { stroke-dashoffset: -22; } }
+
 .arch {
   display: grid;
   grid-template-columns: minmax(0, 0.9fr) 92px minmax(0, 1.2fr) 92px minmax(0, 1.1fr);
@@ -888,6 +919,8 @@ p:last-child { margin-bottom: 0; }
   .bench-grid, .callouts { grid-template-columns: 1fr; }
   .bento { grid-template-columns: 1fr; }
   .tile, .tile-hero, .tile-half { grid-column: 1 / -1; }
+  .arch-svg { display: none; }
+  .arch-svg + .arch { display: grid; }
   .lead { margin-bottom: 36px; }
   .term-body, .code { white-space: pre-wrap; overflow-wrap: anywhere; }
 }
@@ -905,5 +938,6 @@ p:last-child { margin-bottom: 0; }
 
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
+  .arch-svg .flow { animation: none; }
   *, *::before, *::after { transition: none !important; }
 }

@@ -63,7 +63,7 @@
             <span>v0.1.0-preview.1</span>
             <span class="pill-arrow" aria-hidden="true">&rarr;</span>
           </a>
-          <h1 id="hero-title" class="hero-title">Docker on Windows.<br><span class="grad">Less RAM. Less disk. No WSL.</span></h1>
+          <h1 id="hero-title" class="hero-title">Docker on Windows.<br><span class="grad">Less&nbsp;RAM. Less&nbsp;disk. No&nbsp;WSL.</span></h1>
           <p class="hero-sub">
             hyperbutler is a lightweight, Docker&#8209;compatible engine. It boots a minimal Linux
             VM through the Windows Host Compute Service, runs dockerd inside it, and lets the
@@ -280,6 +280,81 @@
           sockets. A tiny Windows service is the only privileged part: it starts and stops that VM,
           and nothing else.
         </p>
+
+        <svg class="arch-svg" viewBox="0 0 1080 500" role="img" aria-labelledby="arch-svg-title">
+          <title id="arch-svg-title">Your tools talk over a named pipe to the hyperbutler engine, which runs as you. The engine talks over Hyper-V sockets to a Linux VM running dockerd. The broker service starts and stops that VM through the Windows Host Compute Service.</title>
+          <defs>
+            <marker id="ah" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+              <path d="M0 0 10 5 0 10z" class="ah"/>
+            </marker>
+            <marker id="ah-amber" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+              <path d="M0 0 10 5 0 10z" class="ah-amber"/>
+            </marker>
+            <linearGradient id="g-engine" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0" stop-color="#1a8cff" stop-opacity=".22"/>
+              <stop offset="1" stop-color="#1a8cff" stop-opacity=".05"/>
+            </linearGradient>
+            <linearGradient id="g-node" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0" stop-color="#ffffff" stop-opacity=".07"/>
+              <stop offset="1" stop-color="#ffffff" stop-opacity=".02"/>
+            </linearGradient>
+            <linearGradient id="g-broker" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0" stop-color="#f5b83d" stop-opacity=".16"/>
+              <stop offset="1" stop-color="#f5b83d" stop-opacity=".03"/>
+            </linearGradient>
+          </defs>
+
+          <rect class="region" x="10" y="20" width="704" height="470" rx="20"/>
+          <text class="region-label" x="32" y="48">WINDOWS · YOUR ACCOUNT</text>
+          <rect class="region region-vm" x="756" y="20" width="314" height="318" rx="20"/>
+          <text class="region-label" x="778" y="48">LINUX VM · HYPER-V · NO WSL</text>
+
+          <!-- your tools -->
+          <rect class="node" x="32" y="76" width="198" height="190" rx="14" fill="url(#g-node)"/>
+          <text class="eyebrow-s" x="52" y="104">UNCHANGED</text>
+          <text class="title-s" x="52" y="130">Your tools</text>
+          <rect class="chip" x="52" y="146" width="158" height="28" rx="8"/>
+          <text class="chip-t" x="131" y="165">docker CLI</text>
+          <rect class="chip" x="52" y="182" width="158" height="28" rx="8"/>
+          <text class="chip-t" x="131" y="201">Compose</text>
+          <rect class="chip" x="52" y="218" width="158" height="28" rx="8"/>
+          <text class="chip-t" x="131" y="237">SDKs · VS Code</text>
+
+          <!-- engine -->
+          <rect class="node node-engine" x="300" y="76" width="390" height="236" rx="16" fill="url(#g-engine)"/>
+          <text class="eyebrow-s" x="324" y="104">RUNS AS YOU · NO ADMIN</text>
+          <text class="title-l" x="324" y="134">hyperbutler engine</text>
+          <g class="row"><circle cx="332" cy="168" r="4"/><text x="346" y="173">Docker API relay</text></g>
+          <g class="row"><circle cx="332" cy="200" r="4"/><text x="346" y="205">User-mode network: NAT, DNS, ports</text></g>
+          <g class="row"><circle cx="332" cy="232" r="4"/><text x="346" y="237">Fast file server for bind mounts from C:\</text></g>
+          <g class="row"><circle cx="332" cy="264" r="4"/><text x="346" y="269">Disk-space guard · status · window</text></g>
+
+          <!-- guest -->
+          <rect class="node" x="778" y="76" width="270" height="236" rx="16" fill="url(#g-node)"/>
+          <text class="eyebrow-s" x="800" y="104">GUEST</text>
+          <text class="title-l" x="800" y="134">dockerd + containerd</text>
+          <g class="row"><circle cx="808" cy="168" r="4"/><text x="822" y="173">Minimal Alpine userland</text></g>
+          <g class="row"><circle cx="808" cy="200" r="4"/><text x="822" y="205">Read-only disk, hash-pinned</text></g>
+          <g class="row"><circle cx="808" cy="232" r="4"/><text x="822" y="237">Data disk gives space back</text></g>
+          <g class="row"><circle cx="808" cy="264" r="4"/><text x="822" y="269">Answers only your engine</text></g>
+
+          <!-- broker -->
+          <rect class="node node-broker" x="300" y="372" width="390" height="98" rx="16" fill="url(#g-broker)"/>
+          <text class="eyebrow-s eyebrow-amber" x="324" y="400">WINDOWS SERVICE · SYSTEM · FROM v0.1.0</text>
+          <text class="title-l" x="324" y="428">hyperbutler broker</text>
+          <text class="body-s" x="324" y="454">The only part that calls HCS · 7 typed requests</text>
+
+          <!-- links -->
+          <path class="link flow" d="M232 171 H296" marker-end="url(#ah)"/>
+          <text class="link-t" x="264" y="160" text-anchor="middle">pipe</text>
+          <path class="link flow" d="M694 194 H774" marker-start="url(#ah)" marker-end="url(#ah)"/>
+          <text class="link-t" x="734" y="176" text-anchor="middle">Hyper-V</text>
+          <text class="link-t" x="734" y="218" text-anchor="middle">sockets</text>
+          <path class="link link-amber flow" d="M495 314 V368" marker-end="url(#ah-amber)"/>
+          <text class="link-t" x="506" y="345">start · stop</text>
+          <path class="link link-amber flow" d="M692 421 H913 V342" marker-end="url(#ah-amber)"/>
+          <text class="link-t" x="800" y="410" text-anchor="middle">HCS: create · start · stop</text>
+        </svg>
 
         <div class="arch" role="img" aria-label="The docker CLI and Compose talk over a named pipe to the hyperbutler engine, which runs as you. The engine talks over Hyper-V sockets to a Linux VM running dockerd. The broker service starts and stops the VM through the Windows Host Compute Service.">
           <div class="arch-node arch-apps">
