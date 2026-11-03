@@ -60,7 +60,7 @@
         <div class="hero-copy">
           <a class="pill" href="#preview">
             <span class="pill-tag">Preview</span>
-            <span>v0.1.0-preview.1</span>
+            <span>v0.1.0-preview.2</span>
             <span class="pill-arrow" aria-hidden="true">&rarr;</span>
           </a>
           <h1 id="hero-title" class="hero-title">Docker on Windows.<br><span class="grad">Less&nbsp;RAM. Less&nbsp;disk. No&nbsp;WSL.</span></h1>
@@ -415,14 +415,14 @@
             <p>Download it from the <a href="https://github.com/Higangssh/hyperbutler/releases/latest">latest release</a>. One UAC prompt, then it:</p>
             <ul class="ticks">
               <li>adds hyperbutler and its <code>docker</code> CLI to the PATH;</li>
-              <li>adds you to <strong>Hyper-V Administrators</strong>, if you leave that box ticked;</li>
+              <li>installs the <strong>broker service</strong>, the small privileged part that starts your VM, so daily use needs no admin rights;</li>
               <li>turns on <strong>Virtual Machine Platform</strong> if it is missing.</li>
             </ul>
           </li>
           <li class="step">
             <span class="step-num" aria-hidden="true">2</span>
-            <h3>Sign out and back in</h3>
-            <p>The group membership applies at your next sign-in. If Virtual Machine Platform was just turned on, Windows asks for a restart instead.</p>
+            <h3>Restart if asked</h3>
+            <p>Only when Virtual Machine Platform was just turned on. Otherwise open a new terminal so it sees the new PATH.</p>
           </li>
           <li class="step">
             <span class="step-num" aria-hidden="true">3</span>
@@ -443,11 +443,11 @@
 <pre class="code"><code>Get-FileHash .\hyperbutler-*-windows-amd64.msi -Algorithm SHA256</code></pre>
           </div>
           <div class="callout callout-warn">
-            <h3>About Hyper-V Administrators</h3>
+            <h3>Prefer no installer?</h3>
             <p>
-              The group lets every program you run control the Hyper-V VMs on this PC, not just
-              hyperbutler. Treat it as close to admin rights. Prefer no installer? The zip needs
-              no admin rights for itself; see the
+              The zip works without installing anything, but it has no broker service, so your
+              account needs Hyper-V Administrators membership. That group lets every program you
+              run control the Hyper-V VMs on this PC: treat it as close to admin rights. See the
               <a href="https://github.com/Higangssh/hyperbutler/blob/main/docs/install.md">install guide</a>.
             </p>
           </div>
@@ -463,12 +463,11 @@
           <p>It works end to end on Windows 11 Home, but some things are still open. Among them:</p>
           <ul class="gaps">
             <li>The 24-hour soak test has not been run (the 1-hour run passed).</li>
-            <li>Until the HCS access broker ships, your account needs Hyper-V Administrators membership.</li>
-            <li>Docker Compose has not been tested yet.</li>
+            <li>The installer has not run on a clean PC yet, and sleep and resume are tested in unit tests only.</li>
             <li>Bind mounts from Windows paths work, but are not yet fast for write-heavy trees: use a named volume for <code>node_modules</code>.</li>
             <li>Builds are not code-signed, and the installer is English only.</li>
           </ul>
-          <p><a class="btn btn-ghost" href="https://github.com/Higangssh/hyperbutler#current-status">Current status and known gaps</a></p>
+          <p><a class="btn btn-ghost" href="https://github.com/Higangssh/hyperbutler/blob/main/docs/status.md">Current status and known gaps</a></p>
         </div>
       </div>
     </section>
