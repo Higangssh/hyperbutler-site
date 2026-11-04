@@ -509,7 +509,7 @@ p:last-child { margin-bottom: 0; }
 .w-mem-hb { width: 12.0%; }      /* 319 MiB of 2660 MiB (the top of Docker Desktop's range) */
 .w-mem-dd-lo { width: 63.5%; }   /* 1690 MiB of 2660 MiB */
 .w-disk-hb { width: 22.1%; }     /* 1.5 GiB of 6.8 GiB */
-.w-dl-hb { width: 12.3%; }       /* 116 MB of 943 MB (592 + 351) */
+.w-dl-hb { width: 13.4%; }       /* 126 MB of 943 MB (592 + 351) */
 .w-dl-dd { width: 62.8%; }       /* 592 MB of 943 MB */
 .w-bind-hb { width: 11.8%; }     /* 0.4 s of 3.4 s */
 
