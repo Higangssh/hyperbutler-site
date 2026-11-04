@@ -506,7 +506,7 @@ p:last-child { margin-bottom: 0; }
 /* Bar lengths, each relative to the longest bar in its chart. */
 .w-full { width: 100%; }
 .w-start-hb { width: 44.6%; }    /* 2.5 s of 5.6 s */
-.w-mem-hb { width: 12.1%; }      /* 322 MiB of 2660 MiB (the top of Docker Desktop's range) */
+.w-mem-hb { width: 12.0%; }      /* 319 MiB of 2660 MiB (the top of Docker Desktop's range) */
 .w-mem-dd-lo { width: 63.5%; }   /* 1690 MiB of 2660 MiB */
 .w-disk-hb { width: 22.1%; }     /* 1.5 GiB of 6.8 GiB */
 .w-dl-hb { width: 12.3%; }       /* 116 MB of 943 MB (592 + 351) */

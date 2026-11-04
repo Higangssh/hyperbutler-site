@@ -58,9 +58,9 @@
       <div class="hero-bg" aria-hidden="true"></div>
       <div class="wrap hero-grid">
         <div class="hero-copy">
-          <a class="pill" href="#preview">
-            <span class="pill-tag">Preview</span>
-            <span>v0.1.0-preview.2</span>
+          <a class="pill" href="#status">
+            <span class="pill-tag">New</span>
+            <span>v0.1.0, the first release</span>
             <span class="pill-arrow" aria-hidden="true">&rarr;</span>
           </a>
           <h1 id="hero-title" class="hero-title">Docker on Windows.<br><span class="grad">Less&nbsp;RAM. Less&nbsp;disk. No&nbsp;WSL.</span></h1>
@@ -143,7 +143,7 @@
             <dl class="bars">
               <div class="bar-row">
                 <dt>hyperbutler</dt>
-                <dd><span class="bar bar-hb w-mem-hb"></span><span class="val val-hb">322 MiB</span></dd>
+                <dd><span class="bar bar-hb w-mem-hb"></span><span class="val val-hb">319 MiB</span></dd>
               </div>
               <div class="bar-row">
                 <dt>Docker Desktop</dt>
@@ -340,7 +340,7 @@
 
           <!-- broker -->
           <rect class="node node-broker" x="300" y="372" width="390" height="98" rx="16" fill="url(#g-broker)"/>
-          <text class="eyebrow-s eyebrow-amber" x="324" y="400">WINDOWS SERVICE · SYSTEM · FROM v0.1.0</text>
+          <text class="eyebrow-s eyebrow-amber" x="324" y="400">WINDOWS SERVICE · SYSTEM · SINCE v0.1.0</text>
           <text class="title-l" x="324" y="428">hyperbutler broker</text>
           <text class="body-s" x="324" y="454">The only part that calls HCS · 7 typed requests</text>
 
@@ -384,7 +384,7 @@
             </ul>
           </div>
           <div class="arch-node arch-broker">
-            <p class="arch-who">Windows service <span class="arch-tag">from v0.1.0</span></p>
+            <p class="arch-who">Windows service <span class="arch-tag">since v0.1.0</span></p>
             <h3>hyperbutler broker</h3>
             <p>
               The only part that calls the Host Compute Service. Seven short, typed requests
@@ -434,7 +434,7 @@
 
         <div class="callouts">
           <div class="callout">
-            <h3>Unsigned preview</h3>
+            <h3>Unsigned builds</h3>
             <p>
               Builds are not code-signed yet, so SmartScreen says &ldquo;Windows protected your
               PC&rdquo;: choose <strong>More info</strong>, then <strong>Run anyway</strong>.
@@ -455,14 +455,13 @@
       </div>
     </section>
 
-    <section id="preview" class="section" aria-labelledby="preview-title">
+    <section id="status" class="section" aria-labelledby="status-title">
       <div class="wrap">
         <div class="preview-card">
-          <p class="eyebrow eyebrow-amber">Preview</p>
-          <h2 id="preview-title" class="h2 h2-sm">This is an early preview.</h2>
-          <p>It works end to end on Windows 11 Home, but some things are still open. Among them:</p>
+          <p class="eyebrow eyebrow-amber">v0.1.0</p>
+          <h2 id="status-title" class="h2 h2-sm">The first release. Still early.</h2>
+          <p>It passed a 24-hour soak (261,338 docker commands, none failed) and works end to end on Windows 11 Home. Some things are still open. Among them:</p>
           <ul class="gaps">
-            <li>The 24-hour soak test has not been run (the 1-hour run passed).</li>
             <li>The installer has not run on a clean PC yet, and sleep and resume are tested in unit tests only.</li>
             <li>Bind mounts from Windows paths work, but are not yet fast for write-heavy trees: use a named volume for <code>node_modules</code>.</li>
             <li>Builds are not code-signed, and the installer is English only.</li>
