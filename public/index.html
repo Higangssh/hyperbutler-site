@@ -60,7 +60,7 @@
         <div class="hero-copy">
           <a class="pill" href="#status">
             <span class="pill-tag">New</span>
-            <span>v0.1.0, the first release</span>
+            <span>v0.1.1: bind mounts twice as fast</span>
             <span class="pill-arrow" aria-hidden="true">&rarr;</span>
           </a>
           <h1 id="hero-title" class="hero-title">Docker on Windows.<br><span class="grad">Less&nbsp;RAM. Less&nbsp;disk. No&nbsp;WSL.</span></h1>
@@ -244,7 +244,7 @@
               <svg viewBox="0 0 24 24" width="22" height="22"><path d="M13 2 4 14h7l-1 8 9-12h-7z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>
             </span>
             <h3>Fast bind mounts from C:\</h3>
-            <p>Mount a Windows folder with <code>-v C:\src:/src</code>. Reading 2000 small files took 0.4&nbsp;s.</p>
+            <p>Mount a Windows folder with <code>-v C:\src:/src</code>. Reading 2000 small files took 0.4&nbsp;s; large files move at about 500&nbsp;MB/s written and 900&nbsp;MB/s read.</p>
           </li>
           <li class="tile">
             <span class="tile-ico" aria-hidden="true">
@@ -458,9 +458,9 @@
     <section id="status" class="section" aria-labelledby="status-title">
       <div class="wrap">
         <div class="preview-card">
-          <p class="eyebrow eyebrow-amber">v0.1.0</p>
-          <h2 id="status-title" class="h2 h2-sm">The first release. Still early.</h2>
-          <p>It passed a 24-hour soak (261,338 docker commands, none failed) and works end to end on Windows 11 Home. Some things are still open. Among them:</p>
+          <p class="eyebrow eyebrow-amber">v0.1.1</p>
+          <h2 id="status-title" class="h2 h2-sm">Released. Still early.</h2>
+          <p>v0.1.0 passed a 24-hour soak (261,338 docker commands, none failed), and v0.1.1 made bind mounts from <code>C:\</code> about twice as fast. It works end to end on Windows 11 Home. Some things are still open. Among them:</p>
           <ul class="gaps">
             <li>The installer has not run on a clean PC yet, and sleep and resume are tested in unit tests only.</li>
             <li>Bind mounts from Windows paths work, but are not yet fast for write-heavy trees: use a named volume for <code>node_modules</code>.</li>
