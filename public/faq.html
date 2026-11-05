@@ -1,0 +1,167 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>FAQ: Docker on Windows without WSL · hyperbutler</title>
+  <meta name="description" content="How to run Docker on Windows 11 without WSL or Docker Desktop, and how hyperbutler compares with Docker Desktop, Rancher Desktop and Podman Desktop.">
+  <meta name="color-scheme" content="dark">
+  <meta name="theme-color" content="#060a12">
+  <link rel="canonical" href="https://hyperbutler.dev/faq">
+  <meta property="og:url" content="https://hyperbutler.dev/faq">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="hyperbutler">
+  <meta property="og:title" content="FAQ: Docker on Windows without WSL">
+  <meta property="og:description" content="Running Docker on Windows 11 without WSL or Docker Desktop, and how hyperbutler compares.">
+  <meta property="og:image" content="https://hyperbutler.dev/img/preview-light.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/img/icon-32.png">
+  <link rel="preload" href="/fonts/Geist-Variable.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="/style.css">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {"@type": "Question", "name": "How do I run Docker on Windows without WSL?",
+       "acceptedAnswer": {"@type": "Answer", "text": "Install hyperbutler from its MSI, run hyperbutler start, then use the docker CLI and Docker Compose as usual. hyperbutler boots a small Linux VM with dockerd directly through the Windows Host Compute Service, so WSL can stay off."}},
+      {"@type": "Question", "name": "Is there a free Docker Desktop alternative for Windows 11?",
+       "acceptedAnswer": {"@type": "Answer", "text": "hyperbutler is open source (Apache-2.0) and free at any company size. It runs Docker's own engine and works with the stock docker CLI and Compose. It has no Kubernetes, Windows containers or extensions."}},
+      {"@type": "Question", "name": "Does hyperbutler work on Windows 11 Home?",
+       "acceptedAnswer": {"@type": "Answer", "text": "Yes. Windows 11 Home, Pro and Enterprise on x64 are supported, with virtualization enabled in the firmware. The installer turns on Virtual Machine Platform if it is off. Windows 10 is not supported."}},
+      {"@type": "Question", "name": "Does docker compose work with hyperbutler?",
+       "acceptedAnswer": {"@type": "Answer", "text": "Yes. The bundled docker CLI and compose plugin, or your own, talk to hyperbutler through a docker context. Builds, healthchecks, service names, named volumes, bind mounts and published ports are tested end to end."}},
+      {"@type": "Question", "name": "Do I need administrator rights to use hyperbutler?",
+       "acceptedAnswer": {"@type": "Answer", "text": "Only once, to install the MSI. After that a small broker service starts and stops your VM, so daily use needs no admin rights and no Hyper-V Administrators membership."}},
+      {"@type": "Question", "name": "Can I move my images and volumes from Docker Desktop?",
+       "acceptedAnswer": {"@type": "Answer", "text": "Yes: hyperbutler import --from-desktop copies images and volumes over."}},
+      {"@type": "Question", "name": "Can AI coding assistants use hyperbutler?",
+       "acceptedAnswer": {"@type": "Answer", "text": "hyperbutler mcp is an MCP server: an AI assistant can read status, containers, logs and disk use. Starting, stopping and deleting need flags the user adds, and what it may run is fenced in."}}
+    ]
+  }
+  </script>
+</head>
+<body>
+  <a class="skip" href="#main">Skip to content</a>
+
+  <header class="nav">
+    <div class="wrap nav-row">
+      <a class="brand" href="/" aria-label="hyperbutler home">
+        <img src="/img/icon-32.png" width="32" height="32" alt="">
+        <span>hyperbutler</span>
+      </a>
+      <nav class="nav-links" aria-label="Main">
+        <ul>
+          <li><a href="https://github.com/Higangssh/hyperbutler">GitHub</a></li>
+          <li><a class="btn btn-sm btn-primary" href="https://github.com/Higangssh/hyperbutler/releases/latest">Download</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main" class="doc">
+    <div class="wrap doc-wrap">
+      <p class="eyebrow">FAQ</p>
+      <h1 class="h2">Docker on Windows, without WSL.</h1>
+      <p class="lead">Common questions about running Docker on Windows 11 with hyperbutler, and how it
+        compares with the other ways to do it.</p>
+
+      <h2 id="without-wsl">How do I run Docker on Windows without WSL?</h2>
+      <p>Install hyperbutler from the <a href="https://github.com/Higangssh/hyperbutler/releases/latest">MSI</a>,
+        then:</p>
+      <pre class="code"><code>hyperbutler start
+docker run --rm hello-world
+docker compose up -d</code></pre>
+      <p>hyperbutler boots a small Linux VM directly through the Windows Host Compute Service (HCS, the
+        Hyper-V API that WSL 2 itself uses) and runs Docker's own engine, dockerd and containerd, in
+        it. The stock <code>docker</code> CLI and Docker Compose talk to it through a
+        <code>hyperbutler</code> docker context. WSL can stay off, and its updates never touch the
+        engine.</p>
+
+      <h2 id="compare">How does it compare with Docker Desktop, Rancher Desktop and Podman Desktop?</h2>
+      <div class="table-scroll">
+        <table>
+          <thead>
+            <tr><th></th><th>hyperbutler</th><th>Docker Desktop</th><th>Rancher Desktop</th><th>Podman Desktop</th></tr>
+          </thead>
+          <tbody>
+            <tr><th scope="row">VM on Windows</th><td>its own, through HCS</td><td>WSL 2 (Hyper-V on Pro and up)</td><td>WSL 2</td><td>WSL 2, or Hyper-V</td></tr>
+            <tr><th scope="row">Needs WSL</th><td>no</td><td>by default</td><td>yes</td><td>by default</td></tr>
+            <tr><th scope="row">Engine</th><td>dockerd</td><td>dockerd</td><td>dockerd or containerd</td><td>Podman</td></tr>
+            <tr><th scope="row">Kubernetes</th><td>no</td><td>yes</td><td>yes (k3s)</td><td>through kind or minikube</td></tr>
+            <tr><th scope="row">Windows containers</th><td>no</td><td>yes</td><td>no</td><td>no</td></tr>
+            <tr><th scope="row">License</th><td>Apache-2.0, free for any company</td><td>paid subscription for larger companies</td><td>Apache-2.0</td><td>Apache-2.0</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>Measured against Docker Desktop 4.97 on one laptop (Windows 11 Home, Core Ultra 7 155H,
+        32 GB), out-of-the-box settings:</p>
+      <div class="table-scroll">
+        <table>
+          <thead><tr><th></th><th>hyperbutler</th><th>Docker Desktop</th></tr></thead>
+          <tbody>
+            <tr><th scope="row">Download</th><td>120 MB</td><td>592 MB (+351 MB WSL)</td></tr>
+            <tr><th scope="row">Installed size</th><td>197 MB</td><td>about 6.7 GB</td></tr>
+            <tr><th scope="row">Start until a container runs</th><td>2.5 s</td><td>5.6 s</td></tr>
+            <tr><th scope="row">Idle memory, VM running</th><td>319 MiB</td><td>1.7–2.7 GB</td></tr>
+            <tr><th scope="row">Disk 5 min after deleting ~5 GB of images</th><td>1.5 GiB</td><td>6.8 GiB</td></tr>
+            <tr><th scope="row">Read 2000 small files from <code>C:\</code></th><td>0.4 s</td><td>3.4 s</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>One machine is not a general result: the
+        <a href="https://github.com/Higangssh/hyperbutler/blob/main/docs/compare-docker-desktop.md">method and raw data</a>
+        are published. Docker Desktop is ahead on breadth: Kubernetes, Windows containers, extensions
+        and a mature GUI.</p>
+
+      <h2 id="home">Does it work on Windows 11 Home?</h2>
+      <p>Yes. Windows 11 Home, Pro and Enterprise on x64 are supported, with virtualization enabled in
+        the firmware; the installer turns on Virtual Machine Platform if it is off. Windows 10 and
+        Windows containers are not supported: hyperbutler runs Linux containers on Windows 11.</p>
+
+      <h2 id="compose">Do Docker Compose, VS Code and SDKs work?</h2>
+      <p>Yes. They use the Docker API, which hyperbutler serves on a named pipe. Builds, healthchecks,
+        service names, named volumes, bind mounts and published ports are tested end to end. Bind
+        mounts from <code>C:\</code> go through hyperbutler's own file server, and file watchers such
+        as Vite and webpack see changes within milliseconds.
+        <a href="https://github.com/Higangssh/hyperbutler/blob/main/docs/compat.md">What differs from Docker Desktop</a>.</p>
+
+      <h2 id="admin">Do I need administrator rights?</h2>
+      <p>Once, for the MSI. It installs a small broker service, the only privileged part, which starts
+        and stops your VM from a fixed template. Daily use needs no admin rights and no Hyper-V
+        Administrators membership.</p>
+
+      <h2 id="migrate">Can I move from Docker Desktop?</h2>
+      <p><code>hyperbutler import --from-desktop</code> copies images and volumes over.</p>
+
+      <h2 id="ai">Can AI coding assistants use it?</h2>
+      <p><code>hyperbutler mcp</code> is an MCP server: an assistant in your editor can read status,
+        containers, logs and disk use. Starting, stopping and deleting need flags you add, and what it
+        may run is fenced in. <a href="https://github.com/Higangssh/hyperbutler/blob/main/docs/mcp.md">MCP docs</a>.</p>
+
+      <h2 id="docker">Is this Docker?</h2>
+      <p>It runs Docker's own open-source engine and speaks the Docker API, so Docker's tools work with
+        it. It is not made by Docker, Inc., and collects no telemetry.</p>
+
+      <div class="cta">
+        <a class="btn btn-primary" href="https://github.com/Higangssh/hyperbutler/releases/latest">Download</a>
+        <a class="btn" href="/">Back to hyperbutler</a>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="wrap footer-row">
+      <div class="footer-brand">
+        <img src="/img/icon-32.png" width="24" height="24" alt="">
+        <span>hyperbutler</span>
+      </div>
+      <p>
+        Open source under the
+        <a href="https://github.com/Higangssh/hyperbutler/blob/main/LICENSE">Apache-2.0</a> license
+        &middot; <a href="https://github.com/Higangssh/hyperbutler">GitHub</a>
+      </p>
+      <p class="fine">Docker is a trademark of Docker, Inc. hyperbutler is not affiliated with Docker, Inc. Other product names belong to their owners.</p>
+    </div>
+  </footer>
+</body>
+</html>

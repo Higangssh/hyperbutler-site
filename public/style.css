@@ -911,6 +911,31 @@ p:last-child { margin-bottom: 0; }
   .tile-hero { grid-column: 1 / -1; }
 }
 
+/* The FAQ page: long text and tables. */
+.doc { padding: 64px 0 96px; }
+.doc-wrap { max-width: 780px; }
+.doc h1 { max-width: none; margin-bottom: 18px; }
+.doc h2 {
+  margin: 48px 0 12px;
+  font-size: 1.35rem;
+  font-weight: 640;
+  letter-spacing: -0.02em;
+  line-height: 1.25;
+}
+.doc p { margin: 0 0 14px; color: var(--muted); line-height: 1.7; }
+.doc p a, .doc td a { color: var(--blue-text); }
+.doc code { font-family: var(--mono); font-size: 0.88em; color: var(--text); }
+.doc .code { margin: 8px 0 18px; overflow-x: auto; }
+.doc .cta { margin-top: 48px; }
+.table-scroll { margin: 8px 0 18px; overflow-x: auto; border: 1px solid var(--line); border-radius: var(--radius-sm); }
+.doc table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
+.doc th, .doc td { padding: 10px 14px; border-bottom: 1px solid var(--line); text-align: left; vertical-align: top; }
+.doc thead th { color: var(--text); font-weight: 620; background: var(--surface-2); white-space: nowrap; }
+.doc tbody th { color: var(--text); font-weight: 560; }
+.doc td { color: var(--muted); }
+.doc td:nth-child(2) { color: var(--text); }
+.doc tbody tr:last-child th, .doc tbody tr:last-child td { border-bottom: 0; }
+
 @media (max-width: 720px) {
   .nav-sec { display: none; }
   .hero { padding: 32px 0 64px; }

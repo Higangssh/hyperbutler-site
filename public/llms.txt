@@ -1,0 +1,42 @@
+# hyperbutler
+
+> hyperbutler is an open-source (Apache-2.0), Docker-compatible engine for Windows 11. It runs Docker's own engine (dockerd and containerd) in a small Linux VM that it boots directly through the Windows Host Compute Service (HCS, the Hyper-V API that WSL 2 also uses), and the stock `docker` CLI and Docker Compose talk to it. It needs neither WSL nor Docker Desktop. It is not made by Docker, Inc.
+
+Key facts:
+
+- Platform: Windows 11 Home, Pro or Enterprise, x64, with virtualization enabled in the firmware. Linux containers only (no Windows containers, no Windows 10).
+- Install: an MSI from GitHub releases (one UAC prompt; it installs a small broker service, adds the CLI to PATH and turns on Virtual Machine Platform), or a zip.
+- Daily use needs no admin rights: a broker service is the only privileged part, and it only starts and stops the user's VM from a fixed template.
+- Measured against Docker Desktop 4.97 on one laptop: 120 MB download vs 592 MB, 197 MB installed vs about 6.7 GB, 319 MiB idle memory vs 1.7 to 2.7 GB, 2.5 s vs 5.6 s from start until a container runs. Freed disk space is given back automatically.
+- Bind mounts from `C:\` go through hyperbutler's own file server (2000 small files read in 0.4 s vs 3.4 s in Docker Desktop), and file watchers (Vite, webpack) fire.
+- Published ports work on `localhost`; `host.docker.internal`, DNS and NAT work through a user-mode network stack, with no virtual switch.
+- Includes a GUI (`hyperbutler gui`), `hyperbutler doctor` for prerequisite checks, `hyperbutler import --from-desktop` to move images and volumes from Docker Desktop, and an MCP server (`hyperbutler mcp`) so AI assistants can read container state and, with flags the user adds, manage containers.
+- No Kubernetes, no Windows containers, no extensions: Docker Desktop is ahead on breadth.
+- No telemetry. Free for every company size.
+
+Common commands:
+
+```
+hyperbutler start        # boot the VM; the Docker API answers in about 1.5 s
+docker run --rm hello-world
+docker compose up -d
+hyperbutler status
+hyperbutler doctor       # check prerequisites and say how to fix them
+hyperbutler stop
+```
+
+## Docs
+
+- [README](https://github.com/Higangssh/hyperbutler/blob/main/README.md): overview, install, quick start, FAQ
+- [Usage](https://github.com/Higangssh/hyperbutler/blob/main/docs/usage.md): the docker CLI and Compose, ports, settings, troubleshooting, uninstall
+- [Install guide](https://github.com/Higangssh/hyperbutler/blob/main/docs/install.md): MSI, zip, prerequisites
+- [Compatibility](https://github.com/Higangssh/hyperbutler/blob/main/docs/compat.md): what works the same as Docker Desktop and what differs
+- [Comparison with Docker Desktop](https://github.com/Higangssh/hyperbutler/blob/main/docs/compare-docker-desktop.md): method and raw data
+- [MCP server](https://github.com/Higangssh/hyperbutler/blob/main/docs/mcp.md): tools, flags and limits for AI assistants
+- [FAQ and comparison](https://hyperbutler.dev/faq): Docker Desktop, Rancher Desktop, Podman Desktop
+
+## Optional
+
+- [Status](https://github.com/Higangssh/hyperbutler/blob/main/docs/status.md): what is released and what is tested
+- [Architecture decisions](https://github.com/Higangssh/hyperbutler/tree/main/docs/adr): HCS broker, bind mounts, networking, the agent sandbox
+- [Releases](https://github.com/Higangssh/hyperbutler/releases)
