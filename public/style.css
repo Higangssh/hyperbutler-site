@@ -784,6 +784,13 @@ p:last-child { margin-bottom: 0; }
 }
 .code code { font-size: inherit; }
 
+/* The agent sandbox section: a command block, then tiles, then a closing line. */
+#sandbox .lead { margin-bottom: 24px; }
+#sandbox .lead-after { margin: 24px 0 0; }
+.bento-after { margin-top: 24px; }
+/* Commands stay one line each; on a phone the block scrolls sideways, not the page. */
+.code.code-sandbox { white-space: pre; overflow-wrap: normal; overflow-x: auto; }
+
 .callouts {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));

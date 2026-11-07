@@ -11,6 +11,7 @@ Key facts:
 - Bind mounts from `C:\` go through hyperbutler's own file server (2000 small files read in 0.4 s vs 3.4 s in Docker Desktop), and file watchers (Vite, webpack) fire.
 - Published ports work on `localhost`; `host.docker.internal`, DNS and NAT work through a user-mode network stack, with no virtual switch.
 - Includes a GUI (`hyperbutler gui`), `hyperbutler doctor` for prerequisite checks, `hyperbutler import --from-desktop` to move images and volumes from Docker Desktop, and an MCP server (`hyperbutler mcp`) so AI assistants can read container state and, with flags the user adds, manage containers.
+- Agent sandbox, new in v0.2.0-rc.1 (a pre-release; v0.1.1 is the latest stable release): `hyperbutler sandbox run DIR` gives a coding agent, or any command, a Linux VM of its own with a copy of the project. Changes reach the user's files only after `sandbox diff` and `sandbox apply`; the network is a mode (`dev`: package registries, git hosts and model providers' APIs by name; `locked`: only what the user allows; `open`). Headless Chromium runs in a session (Playwright). The session image is a separate download of about 260 MB.
 - No Kubernetes, no Windows containers, no extensions: Docker Desktop is ahead on breadth.
 - No telemetry. Free for every company size.
 
@@ -33,6 +34,7 @@ hyperbutler stop
 - [Compatibility](https://github.com/Higangssh/hyperbutler/blob/main/docs/compat.md): what works the same as Docker Desktop and what differs
 - [Comparison with Docker Desktop](https://github.com/Higangssh/hyperbutler/blob/main/docs/compare-docker-desktop.md): method and raw data
 - [MCP server](https://github.com/Higangssh/hyperbutler/blob/main/docs/mcp.md): tools, flags and limits for AI assistants
+- [Agent sandbox](https://github.com/Higangssh/hyperbutler/blob/main/docs/sandbox.md): sessions, review and apply, network modes, browsers
 - [FAQ and comparison](https://hyperbutler.dev/faq): Docker Desktop, Rancher Desktop, Podman Desktop
 
 ## Optional
