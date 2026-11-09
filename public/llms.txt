@@ -7,11 +7,11 @@ Key facts:
 - Platform: Windows 11 Home, Pro or Enterprise, x64, with virtualization enabled in the firmware. Linux containers only (no Windows containers, no Windows 10).
 - Install: an MSI from GitHub releases (one UAC prompt; it installs a small broker service, adds the CLI to PATH and turns on Virtual Machine Platform), or a zip.
 - Daily use needs no admin rights: a broker service is the only privileged part, and it only starts and stops the user's VM from a fixed template.
-- Measured against Docker Desktop 4.97 on one laptop: 120 MB download vs 592 MB, 197 MB installed vs about 6.7 GB, 319 MiB idle memory vs 1.7 to 2.7 GB, 2.5 s vs 5.6 s from start until a container runs. Freed disk space is given back automatically.
+- Measured against Docker Desktop 4.97 on one laptop: 146 MB download vs 592 MB, 270 MB installed vs about 6.7 GB, 319 MiB idle memory vs 1.7 to 2.7 GB, 2.5 s vs 5.6 s from start until a container runs. Freed disk space is given back automatically.
 - Bind mounts from `C:\` go through hyperbutler's own file server (2000 small files read in 0.4 s vs 3.4 s in Docker Desktop), and file watchers (Vite, webpack) fire.
 - Published ports work on `localhost`; `host.docker.internal`, DNS and NAT work through a user-mode network stack, with no virtual switch.
 - Includes a GUI (`hyperbutler gui`), `hyperbutler doctor` for prerequisite checks, `hyperbutler import --from-desktop` to move images and volumes from Docker Desktop, and an MCP server (`hyperbutler mcp`) so AI assistants can read container state and, with flags the user adds, manage containers.
-- Agent sandbox, new in v0.2.0-rc.1 (a pre-release; v0.1.1 is the latest stable release): `hyperbutler sandbox run DIR` gives a coding agent, or any command, a Linux VM of its own with a copy of the project. Changes reach the user's files only after `sandbox diff` and `sandbox apply`; the network is a mode (`dev`: package registries, git hosts and model providers' APIs by name; `locked`: only what the user allows; `open`). Headless Chromium runs in a session (Playwright). The session image is a separate download of about 270 MB.
+- Agent sandbox, new in v0.2.0: `hyperbutler sandbox run DIR` gives a coding agent, or any command, a Linux VM of its own with a copy of the project. Changes reach the user's files only after `sandbox diff` and `sandbox apply`; the network is a mode (`dev`: package registries, git hosts and model providers' APIs by name; `locked`: only what the user allows; `open`). Headless Chromium runs in a session (Playwright). The session image is a separate download of about 270 MB.
 - No Kubernetes, no Windows containers, no extensions: Docker Desktop is ahead on breadth.
 - No telemetry. Free for every company size.
 

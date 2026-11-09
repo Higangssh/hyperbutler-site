@@ -41,7 +41,7 @@
     "codeRepository": "https://github.com/Higangssh/hyperbutler",
     "applicationCategory": "DeveloperApplication",
     "operatingSystem": "Windows 11",
-    "softwareVersion": "0.1.1",
+    "softwareVersion": "0.2.0",
     "license": "https://www.apache.org/licenses/LICENSE-2.0",
     "isAccessibleForFree": true,
     "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"},
@@ -80,7 +80,7 @@
         <div class="hero-copy">
           <a class="pill" href="#sandbox">
             <span class="pill-tag">New</span>
-            <span>v0.2.0-rc.1: a sandbox for AI coding agents</span>
+            <span>v0.2.0: a sandbox for AI coding agents</span>
             <span class="pill-arrow" aria-hidden="true">&rarr;</span>
           </a>
           <h1 id="hero-title" class="hero-title">Docker on Windows.<br><span class="grad">Less&nbsp;RAM. Less&nbsp;disk. No&nbsp;WSL.</span></h1>
@@ -293,7 +293,7 @@
 
     <section id="sandbox" class="section" aria-labelledby="sandbox-title">
       <div class="wrap">
-        <p class="eyebrow eyebrow-amber">New in v0.2.0-rc.1 &middot; pre-release</p>
+        <p class="eyebrow eyebrow-amber">New in v0.2.0</p>
         <h2 id="sandbox-title" class="h2">A sandbox for AI coding agents.</h2>
         <p class="lead">
           <code>hyperbutler sandbox run</code> gives a coding agent, or any command, a Linux VM of
@@ -331,9 +331,9 @@
           </li>
         </ul>
         <p class="lead lead-after">
-          The session image is a separate download of about 260&nbsp;MB, on first use.
+          The session image is a separate download of about 270&nbsp;MB, on first use.
           <a href="https://github.com/Higangssh/hyperbutler/blob/main/docs/sandbox.md">How the sandbox works</a>
-          &middot; <a href="https://github.com/Higangssh/hyperbutler/releases/tag/v0.2.0-rc.1">v0.2.0-rc.1</a>
+          &middot; <a href="https://github.com/Higangssh/hyperbutler/releases/tag/v0.2.0">v0.2.0</a>
         </p>
       </div>
     </section>
@@ -525,9 +525,9 @@
     <section id="status" class="section" aria-labelledby="status-title">
       <div class="wrap">
         <div class="preview-card">
-          <p class="eyebrow eyebrow-amber">v0.1.1 &middot; v0.2.0-rc.1</p>
+          <p class="eyebrow eyebrow-amber">v0.2.0</p>
           <h2 id="status-title" class="h2 h2-sm">Released. Still early.</h2>
-          <p>v0.1.0 passed a 24-hour soak (261,338 docker commands, none failed), and v0.1.1 made bind mounts from <code>C:\</code> about twice as fast. It works end to end on Windows 11 Home. v0.2.0-rc.1, a pre-release, adds the agent sandbox; v0.2.0 follows once it has passed its own 24-hour soak. Some things are still open. Among them:</p>
+          <p>v0.2.0 adds the agent sandbox, BuildKit builds and ports published on <code>127.0.0.1</code>. Its release candidate ran a 24-hour soak (283,947 docker commands, none failed), and the one slow leak it found is fixed. It works end to end on Windows 11 Home. Some things are still open. Among them:</p>
           <ul class="gaps">
             <li>The installer has not run on a clean PC yet, and sleep and resume are tested in unit tests only.</li>
             <li>Bind mounts from Windows paths work, but are not yet fast for write-heavy trees: use a named volume for <code>node_modules</code>.</li>
